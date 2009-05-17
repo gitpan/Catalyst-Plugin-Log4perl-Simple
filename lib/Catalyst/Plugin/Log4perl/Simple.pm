@@ -13,7 +13,7 @@ Version 0.001
 
 =cut
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 use List::Util qw( first );
 use Catalyst::Log::Log4perl;
