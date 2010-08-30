@@ -12,8 +12,9 @@ WriteMakefile(
       : ()),
     PL_FILES            => {},
     PREREQ_PM => {
-        'Test::More' => 0,
-	'Catalyst::Log::Log4perl' => 0,
+                  'Test::More' => undef,
+                  'Catalyst::Log::Log4perl' => undef,
+                  'Moose' => undef,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'Catalyst-Plugin-Log4perl-Simple-*' },

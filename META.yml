@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Catalyst-Plugin-Log4perl-Simple
-version:            0.002
+version:            0.003
 abstract:           Simple Log4perl setup for Catalyst application
 author:
     - Peter Corlett <abuse@cabal.org.uk>
@@ -11,13 +11,14 @@ configure_requires:
 build_requires:
     ExtUtils::MakeMaker:  0
 requires:
-    Catalyst::Log::Log4perl:  0
-    Test::More:           0
+    Catalyst::Log::Log4perl:  ~
+    Moose:                ~
+    Test::More:           ~
 no_index:
     directory:
         - t
         - inc
-generated_by:       ExtUtils::MakeMaker version 6.50
+generated_by:       ExtUtils::MakeMaker version 6.56
 meta-spec:
     url:      http://module-build.sourceforge.net/META-spec-v1.4.html
     version:  1.4

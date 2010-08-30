@@ -1,9 +1,10 @@
 Changes
-MANIFEST
-Makefile.PL
-README
 lib/Catalyst/Plugin/Log4perl/Simple.pm
+Makefile.PL
+MANIFEST
+README
 t/00-load.t
+t/boilerplate.t
 t/pod-coverage.t
 t/pod.t
 META.yml                                 Module meta-data (added by MakeMaker)
