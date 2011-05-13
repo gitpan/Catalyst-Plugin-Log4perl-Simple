@@ -1,6 +1,46 @@
 package Catalyst::Plugin::Log4perl::Simple;
+BEGIN {
+  $Catalyst::Plugin::Log4perl::Simple::DIST = 'Catalyst-Plugin-Log4perl-Simple';
+}
+BEGIN {
+  $Catalyst::Plugin::Log4perl::Simple::VERSION = '0.004';
+}
+# ABSTRACT: Simple Log4perl setup for Catalyst application
 use Moose;
 use namespace::autoclean;
+
+use List::Util qw( first );
+use Catalyst::Log::Log4perl;
+
+
+
+sub setup {
+    my $package = shift;
+    my $pkgname = ref $package || $package;
+    my $confname = lc $pkgname;
+    $confname =~ s/::/_/g;
+
+    my $logpath = first { -s $_ } (
+        "${confname}_log.conf", "log.conf",
+        "../${confname}_log.conf", "../log.conf",
+        "/etc/${confname}_log.conf", "/etc/$confname/log.conf"
+    );
+    if (defined $logpath) {
+        $package->log(Catalyst::Log::Log4perl->new($logpath));
+    } else {
+        $package->log(Catalyst::Log::Log4perl->new());
+        $package->log->warn('no log4perl configuration found');
+    }
+
+    $package->maybe::next::method(@_);
+}
+
+
+__PACKAGE__->meta->make_immutable;
+1;
+
+__END__
+=pod
 
 =head1 NAME
 
@@ -8,20 +48,15 @@ Catalyst::Plugin::Log4perl::Simple - Simple Log4perl setup for Catalyst applicat
 
 =head1 VERSION
 
-Version 0.003
-
-=cut
-
-our $VERSION = '0.003';
-
-use List::Util qw( first );
-use Catalyst::Log::Log4perl;
+version 0.004
 
 =head1 SYNOPSIS
 
  use Catalyst qw/ ... Log4Perl::Simple /;
 
  $c->log->warn("Now we're logging through Log4perl");
+
+=head1 DESCRIPTION
 
 This is a trivial Catalyst plugin that searches for a log4perl configuration
 file and uses it to configure Catalyst::Log::Log4perl as the logger for your
@@ -45,51 +80,32 @@ For an application My::App, the following locations are searched:
 
 =back
 
-=cut
+=for test_synopsis my $c;
 
-sub setup {
-    my $package = shift;
-    my $pkgname = ref $package || $package;
+=head1 METHODS
 
-    my $confname = lc $package;
-    $confname =~ s/::/_/g;
+=head2 setup
 
-    my $logpath = first { -s $_ }
-      ( "${confname}_log.conf", "log.conf",
-        "../${confname}_log.conf", "../log.conf",
-        "/etc/${confname}_log.conf", "/etc/$confname/log.conf" );
-    if (defined $logpath) {
-        $package->log(Catalyst::Log::Log4perl->new($logpath));
-    } else {
-        $package->log(Catalyst::Log::Log4perl->new());
-        $package->log->warn('no log4perl configuration found');
-    }
-
-    $package->maybe::next::method(@_);
-}
-
-=head1 AUTHOR
-
-Peter Corlett, C<< <abuse at cabal.org.uk> >>
+Called by Catalyst to set up the plugin. You should not need to call this yourself.
 
 =head1 BUGS
 
-Versions earlier than 0.002 were overcomplicated and used a now-deprecated
-NEXT method. Under recent Catalyst, this would break plugins listed after it
-in the "use Catalyst" line.
+There is no test suite.
 
 =head1 SEE ALSO
 
 Catalyst::Log::Log4perl
 
-=head1 COPYRIGHT & LICENSE
+=head1 AUTHOR
 
-Copyright 2009,2010 Peter Corlett, all rights reserved.
+Peter Corlett <abuse@cabal.org.uk>
 
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2011 by Peter Corlett.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
 
-__PACKAGE__->meta->make_immutable;
-1;

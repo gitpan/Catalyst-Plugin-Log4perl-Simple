@@ -1,5 +1,4 @@
 Revision history for Catalyst-Plugin-Log4perl-Simple
 
-0.01    Date/time
-        First version, released on an unsuspecting world.
-
+0.004     2011-05-13 18:58:11 Europe/London
+        updated distribution to use Dist::Zilla
