@@ -1,16 +1,15 @@
 package Catalyst::Plugin::Log4perl::Simple;
-BEGIN {
+{
   $Catalyst::Plugin::Log4perl::Simple::DIST = 'Catalyst-Plugin-Log4perl-Simple';
 }
-BEGIN {
-  $Catalyst::Plugin::Log4perl::Simple::VERSION = '0.004';
+{
+  $Catalyst::Plugin::Log4perl::Simple::VERSION = '0.005';
 }
 # ABSTRACT: Simple Log4perl setup for Catalyst application
 use Moose;
-use namespace::autoclean;
-
+use Log::Log4perl::Catalyst;
 use List::Util qw( first );
-use Catalyst::Log::Log4perl;
+use namespace::autoclean;
 
 
 
@@ -26,9 +25,9 @@ sub setup {
         "/etc/${confname}_log.conf", "/etc/$confname/log.conf"
     );
     if (defined $logpath) {
-        $package->log(Catalyst::Log::Log4perl->new($logpath));
+        $package->log(Log::Log4perl::Catalyst->new($logpath));
     } else {
-        $package->log(Catalyst::Log::Log4perl->new());
+        $package->log(Log::Log4perl::Catalyst->new());
         $package->log->warn('no log4perl configuration found');
     }
 
@@ -37,7 +36,6 @@ sub setup {
 
 
 __PACKAGE__->meta->make_immutable;
-1;
 
 __END__
 =pod
@@ -48,7 +46,7 @@ Catalyst::Plugin::Log4perl::Simple - Simple Log4perl setup for Catalyst applicat
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 SYNOPSIS
 
@@ -59,7 +57,7 @@ version 0.004
 =head1 DESCRIPTION
 
 This is a trivial Catalyst plugin that searches for a log4perl configuration
-file and uses it to configure Catalyst::Log::Log4perl as the logger for your
+file and uses it to configure Log::Log4perl::Catalyst as the logger for your
 application. If no configuration is found, a sensible default is provided.
 
 For an application My::App, the following locations are searched:
@@ -94,7 +92,7 @@ There is no test suite.
 
 =head1 SEE ALSO
 
-Catalyst::Log::Log4perl
+Log::Log4perl::Catalyst
 
 =head1 AUTHOR
 
